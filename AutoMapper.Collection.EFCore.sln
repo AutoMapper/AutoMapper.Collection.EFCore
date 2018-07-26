@@ -5,8 +5,9 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{578F2483-CF08-409D-A316-31BCB7C5D9D0}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
 		.nuget\NuGet.Config = .nuget\NuGet.Config
+		README.md = README.md
+		version.props = version.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoMapper.Collection.EntityFrameworkCore", "src\AutoMapper.Collection.EntityFrameworkCore\AutoMapper.Collection.EntityFrameworkCore.csproj", "{1FABEDBB-1EEE-401F-A7D3-82C439BD93D4}"
