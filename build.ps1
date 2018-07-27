@@ -14,17 +14,21 @@ task local -depends init, compile, test
 task ci -depends clean, release, local
 
 task clean {
-	rd "$artifacts_dir" -recurse -force  -ErrorAction SilentlyContinue | out-null
-	rd "$result_dir" -recurse -force  -ErrorAction SilentlyContinue | out-null
+	Remove-Item "$artifacts_dir" -recurse -force  -ErrorAction SilentlyContinue | out-null
+	Remove-Item "$result_dir" -recurse -force  -ErrorAction SilentlyContinue | out-null
 }
 
 task init {
+
 	# Make sure per-user dotnet is installed
+
 	Install-Dotnet
 }
 
 task release {
-    $global:config = "release"
+
+	$global:config = "release"
+
 }
 
 task compile -depends clean {
@@ -34,13 +38,13 @@ task compile -depends clean {
 	$suffix = @{ $true = ""; $false = "ci-$revision"}[$tag -ne $NULL -and $revision -ne "local"]
 	$commitHash = $(git rev-parse --short HEAD)
 	$buildSuffix = @{ $true = "$($suffix)-$($commitHash)"; $false = "$($branch)-$($commitHash)" }[$suffix -ne ""]
-	
+
 	$buildParam = @{ $true = ""; $false = "--version-suffix=$buildSuffix"}[$tag -ne $NULL -and $revision -ne "local"]
 	$packageParam = @{ $true = ""; $false = "--version-suffix=$suffix"}[$tag -ne $NULL -and $revision -ne "local"]
-	
-	echo "build: Tag is $tag"
-	echo "build: Package version suffix is $suffix"
-	echo "build: Build version suffix is $buildSuffix" 
+
+	Write-Output "build: Tag is $tag"
+	Write-Output "build: Package version suffix is $suffix"
+	Write-Output "build: Build version suffix is $buildSuffix"
 
 	# restore all project references (creating project.assets.json for each project)
 	exec { dotnet restore $base_dir\AutoMapper.Collection.EFCore.sln /nologo }
@@ -48,6 +52,7 @@ task compile -depends clean {
 	exec { dotnet build $base_dir\AutoMapper.Collection.EFCore.sln -c $config $buildParam /nologo --no-restore }
 
 	exec { dotnet pack $base_dir\AutoMapper.Collection.EFCore.sln -c $config --include-symbols --no-build --no-restore --output $artifacts_dir $packageParam /nologo}
+
 }
 
 task test {
@@ -58,36 +63,33 @@ task test {
 
 function Install-Dotnet
 {
-    $dotnetcli = where-is('dotnet')
-	
-    if($dotnetcli -eq $null)
+    $dotnetcli = Get-CommandLocation -command 'dotnet'
+
+    if ($null -eq $dotnetcli)
     {
 		$dotnetPath = "$pwd\.dotnet"
-		$dotnetCliVersion = if ($env:DOTNET_CLI_VERSION -eq $null) { 'Latest' } else { $env:DOTNET_CLI_VERSION }
-		$dotnetInstallScriptUrl = 'https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/install.ps1'
-		$dotnetInstallScriptPath = '.\scripts\obtain\install.ps1'
-
-		md -Force ".\scripts\obtain\" | Out-Null
-		curl $dotnetInstallScriptUrl -OutFile $dotnetInstallScriptPath
-		& .\scripts\obtain\install.ps1 -Channel "preview" -version $dotnetCliVersion -InstallDir $dotnetPath -NoPath
+		$dotnetCliVersion = if ($null -eq $env:DOTNET_CLI_VERSION) { 'Latest' } else { $env:DOTNET_CLI_VERSION }
+		[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; 
+		&([scriptblock]::Create((Invoke-WebRequest -useb 'https://dot.net/v1/dotnet-install.ps1'))) -Channel "LTS" -version $dotnetCliVersion -InstallDir $dotnetPath -NoPath
 		$env:Path = "$dotnetPath;$env:Path"
 	}
 }
 
-function where-is($command) {
-    (ls env:\path).Value.split(';') | `
-        where { $_ } | `
-        %{ [System.Environment]::ExpandEnvironmentVariables($_) } | `
-        where { test-path $_ } |`
-        %{ ls "$_\*" -include *.bat,*.exe,*cmd } | `
-        %{  $file = $_.Name; `
-            if($file -and ($file -eq $command -or `
-			   $file -eq ($command + '.exe') -or  `
-			   $file -eq ($command + '.bat') -or  `
-			   $file -eq ($command + '.cmd'))) `
+function Get-CommandLocation {
+	param ($command)
+    (Get-ChildItem env:\path).Value.split(';') | `
+        Where-Object { $_ } | `
+        ForEach-Object{ [System.Environment]::ExpandEnvironmentVariables($_) } | `
+        Where-Object { test-path $_ } |`
+        ForEach-Object{ Get-ChildItem "$_\*" -include *.bat,*.exe,*.cmd } | `
+        ForEach-Object{  $file = $_.Name; `
+            if ($file -and ($file -eq $command -or `
+			    $file -eq ($command + '.exe') -or  `
+			    $file -eq ($command + '.bat') -or  `
+			    $file -eq ($command + '.cmd'))) `
             { `
                 $_.FullName `
             } `
         } | `
-        select -unique
+        Select-Object -unique
 }
