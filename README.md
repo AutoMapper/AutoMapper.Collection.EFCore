@@ -33,3 +33,4 @@ How to get it
 Use NuGet Package Manager to install the package or use any of the following command in NuGet Package Manager Console.
 	
 	PM> Install-Package AutoMapper.Collection.EntityFrameworkCore
+
