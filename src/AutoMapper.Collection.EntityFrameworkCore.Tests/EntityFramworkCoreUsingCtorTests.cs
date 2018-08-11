@@ -17,13 +17,18 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             {
                 x.AddCollectionMappers();
                 x.CreateMap<ThingDto, Thing>().ReverseMap();
-                x.SetGeneratePropertyMaps<GenerateEntityFrameworkCorePrimaryKeyPropertyMaps<DB>>();
+                x.AddEntityFrameworkCoreKeys<DB>();
             });
         }
 
         protected override DBContextBase GetDbContext()
         {
             return new DB();
+        }
+
+        protected override IMapper GetMapper()
+        {
+            return Mapper.Instance;
         }
 
         public class DB : DBContextBase

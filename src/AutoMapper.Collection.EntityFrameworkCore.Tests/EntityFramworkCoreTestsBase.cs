@@ -12,6 +12,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
     public abstract class EntityFramworkCoreTestsBase
     {
         protected abstract DBContextBase GetDbContext();
+        protected abstract IMapper GetMapper();
 
         [Fact]
         public void Should_Persist_To_Update()
@@ -26,7 +27,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 
             var item = db.Things.First();
 
-            db.Things.Persist().InsertOrUpdate(new ThingDto { ID = item.ID, Title = "Test" });
+            db.Things.Persist(GetMapper()).InsertOrUpdate(new ThingDto { ID = item.ID, Title = "Test" });
             Assert.Equal(1, db.ChangeTracker.Entries<Thing>().Count(x => x.State == EntityState.Modified));
 
             Assert.Equal(3, db.Things.Count());
@@ -45,7 +46,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 
             Assert.Equal(3, db.Things.Count());
 
-            db.Things.Persist().InsertOrUpdate(new ThingDto { Title = "Test" });
+            db.Things.Persist(GetMapper()).InsertOrUpdate(new ThingDto { Title = "Test" });
             Assert.Equal(3, db.Things.Count());
             Assert.Equal(1, db.ChangeTracker.Entries<Thing>().Count(x => x.State == EntityState.Added));
 

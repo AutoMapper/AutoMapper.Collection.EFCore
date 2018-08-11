@@ -1,17 +1,17 @@
 ﻿using System;
-using AutoMapper.EntityFrameworkCore;
+using System.Reflection;
 using AutoMapper.EquivalencyExpression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
-    public class EntityFramworkCoreUsingDITests : EntityFramworkCoreTestsBase, IDisposable
+    public class EntityFrameworkCoreUsingMicrosoftDITests : EntityFramworkCoreTestsBase, IDisposable
     {
         private readonly ServiceProvider _serviceProvider;
         private readonly IServiceScope _serviceScope;
 
-        public EntityFramworkCoreUsingDITests()
+        public EntityFrameworkCoreUsingMicrosoftDITests()
         {
             var services = new ServiceCollection();
 
@@ -19,33 +19,30 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
                 .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<DB>(options => options.UseInMemoryDatabase("EfTestDatabase" + Guid.NewGuid()));
 
-            _serviceProvider = services.BuildServiceProvider();
-
-            Mapper.Reset();
-            Mapper.Initialize(x =>
+            services.AddAutoMapper(automapper =>
             {
-                x.ConstructServicesUsing(type => ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, type));
-                x.AddCollectionMappers();
-                x.AddEntityFrameworkCoreKeys<DB>(_serviceProvider);
-            });
+                automapper.AddCollectionMappers();
+                automapper.AddEntityFrameworkCoreKeys<DB>(services);
+            }, new Assembly[0]);
 
-            _serviceScope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            this._serviceProvider = services.BuildServiceProvider();
+            this._serviceScope = this._serviceProvider.CreateScope();
         }
 
         public void Dispose()
         {
-            _serviceScope?.Dispose();
-            _serviceProvider?.Dispose();
+            this._serviceScope?.Dispose();
+            this._serviceProvider?.Dispose();
         }
 
         protected override DBContextBase GetDbContext()
         {
-            return _serviceScope.ServiceProvider.GetRequiredService<DB>();
+            return this._serviceScope.ServiceProvider.GetRequiredService<DB>();
         }
 
         protected override IMapper GetMapper()
         {
-            return Mapper.Instance;
+            return this._serviceScope.ServiceProvider.GetRequiredService<IMapper>();
         }
 
         public class DB : DBContextBase
