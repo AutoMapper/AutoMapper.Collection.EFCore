@@ -22,7 +22,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             services.AddAutoMapper(automapper =>
             {
                 automapper.AddCollectionMappers();
-                automapper.AddEntityFrameworkCoreKeys<DB>(services);
+                automapper.UseEntityFrameworkCoreModel<DB>(services);
             }, new Assembly[0]);
 
             this._serviceProvider = services.BuildServiceProvider();

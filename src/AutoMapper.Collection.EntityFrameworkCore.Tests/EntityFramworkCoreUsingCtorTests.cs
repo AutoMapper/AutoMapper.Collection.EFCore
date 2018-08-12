@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Linq;
-using AutoMapper.EntityFrameworkCore;
 using AutoMapper.EquivalencyExpression;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Xunit;
 
 namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
@@ -17,7 +13,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             {
                 x.AddCollectionMappers();
                 x.CreateMap<ThingDto, Thing>().ReverseMap();
-                x.AddEntityFrameworkCoreKeys<DB>();
+                x.UseEntityFrameworkCoreModel<DB>();
             });
         }
 

@@ -26,7 +26,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             {
                 x.ConstructServicesUsing(type => ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, type));
                 x.AddCollectionMappers();
-                x.AddEntityFrameworkCoreKeys<DB>(_serviceProvider);
+                x.UseEntityFrameworkCoreModel<DB>(_serviceProvider);
             });
 
             _serviceScope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
