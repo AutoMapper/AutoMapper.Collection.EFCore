@@ -45,8 +45,8 @@ namespace AutoMapper
             where TContext : DbContext
         {
             using (var scope = serviceProvider.CreateScope())
-            using (var context = scope.ServiceProvider.GetRequiredService<TContext>())
             {
+                var context = scope.ServiceProvider.GetRequiredService<TContext>();
                 config.UseEntityFrameworkCoreModel<TContext>(context.Model);
             }
         }
