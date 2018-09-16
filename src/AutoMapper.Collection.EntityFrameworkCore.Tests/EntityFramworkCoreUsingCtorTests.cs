@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Linq;
-using AutoMapper.EntityFrameworkCore;
 using AutoMapper.EquivalencyExpression;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Xunit;
 
 namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
@@ -17,13 +13,18 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             {
                 x.AddCollectionMappers();
                 x.CreateMap<ThingDto, Thing>().ReverseMap();
-                x.SetGeneratePropertyMaps<GenerateEntityFrameworkCorePrimaryKeyPropertyMaps<DB>>();
+                x.UseEntityFrameworkCoreModel<DB>();
             });
         }
 
         protected override DBContextBase GetDbContext()
         {
             return new DB();
+        }
+
+        protected override IMapper GetMapper()
+        {
+            return Mapper.Instance;
         }
 
         public class DB : DBContextBase
