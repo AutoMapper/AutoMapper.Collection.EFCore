@@ -21,9 +21,9 @@ namespace AutoMapper.EntityFrameworkCore
 
         public IEnumerable<PropertyMap> GeneratePropertyMaps(TypeMap typeMap)
         {
-            var propertyMaps = typeMap.GetPropertyMaps();
+            var propertyMaps = typeMap.PropertyMaps;
             var keyMembers = _model.FindEntityType(typeMap.DestinationType)?.FindPrimaryKey().Properties ?? new List<IProperty>();
-            return keyMembers.Select(m => Array.Find(propertyMaps, p => p.DestinationProperty.Name == m.Name));
+            return keyMembers.Select(m => propertyMaps.FirstOrDefault(p => p.DestinationMember.Name == m.Name));
         }
     }
 }
