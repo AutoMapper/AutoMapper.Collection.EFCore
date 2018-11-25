@@ -1,21 +1,41 @@
 <img src="https://s3.amazonaws.com/automapper/logo.png" alt="AutoMapper"> 
 
-AutoMapper.Collection.EFCore
-================================
-`Automapper.Collection.EntityFrameworkCore` will help you mapping of EntityFrameowrk Core DbContext-object.
-	
-    Mapper.Initialize(cfg =>
-    {
-        cfg.AddCollectionMappers();
-        cfg.SetGeneratePropertyMaps<GenerateEntityFrameworkCorePrimaryKeyPropertyMaps<DB>>();
-        // Configuration code
-    });
+# AutoMapper.Collection.EntityFrameworkCore
 
-User defined equality expressions will overwrite primary key expressions.
+`Automapper.Collection.EntityFrameworkCore` will help you mapping of EntityFrameowrk Core DbContext-object.
+
+## Configuration examples
+
+- Usage together with Dependency injection and AutoMapper.Extensions.Microsoft.DependencyInjection pacakge
+    ```	
+        var services = new ServiceCollection();
+        services
+            .AddEntityFrameworkInMemoryDatabase()
+            .AddDbContext<DB>();
+
+        services.AddAutoMapper(automapper =>
+        {
+            automapper.AddCollectionMappers();
+            automapper.UseEntityFrameworkCoreModel<DB>(services);
+        }, typeof(DB).Assembly);
+
+        var serviceProvider = services.BuildServiceProvider();
+    ```
+
+- Simple usage with static version of AutoMapper
+    ```
+        Mapper.Initialize(x =>
+        {
+            x.AddCollectionMappers();
+            x.UseEntityFrameworkCoreModel<DB>();
+        });
+    ```
+
+**Note:** User defined equality expressions will overwrite primary key expressions.
 
 What about comparing to a single existing Entity for updating?
 --------------------------------
-Automapper.Collection.EntityFramework does that as well through extension method from of DbSet<TEntity>.
+Automapper.Collection.EntityFrameworkCore does that as well through extension method from of DbSet<TEntity>.
 
 Translate equality between dto and EF object to an expression of just the EF using the dto's values as constants.
 
