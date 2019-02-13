@@ -29,7 +29,7 @@ namespace AutoMapper.EntityFrameworkCore
                 ? Mapper.Map(from, type, typeof(Expression<Func<TTo, bool>>)) as Expression<Func<TTo, bool>>
                 : _mapper.Map(from, type, typeof(Expression<Func<TTo, bool>>)) as Expression<Func<TTo, bool>>;
             if (equivExpr == null)
-                return null;
+                throw new ArgumentException($"Could not retreive equivalency expression for mapping {type.Name} --> {typeof(TTo).Name}");
 
             var to = _sourceSet.FirstOrDefault(equivExpr);
 
