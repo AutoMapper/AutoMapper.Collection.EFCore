@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoMapper.EntityFrameworkCore
 {
-    public class Persistence<TTo> : IPersistence
+    public class Persistence<TTo> : IPersistence<TTo>
         where TTo : class
     {
         private readonly DbSet<TTo> _sourceSet;
@@ -17,19 +17,19 @@ namespace AutoMapper.EntityFrameworkCore
             _mapper = mapper;
         }
 
-        public void InsertOrUpdate<TFrom>(TFrom from)
+        public TTo InsertOrUpdate<TFrom>(TFrom from)
             where TFrom : class
         {
-            InsertOrUpdate(typeof(TFrom), from);
+            return InsertOrUpdate(typeof(TFrom), from);
         }
 
-        public void InsertOrUpdate(Type type, object from)
+        public TTo InsertOrUpdate(Type type, object from)
         {
             var equivExpr = _mapper == null
                 ? Mapper.Map(from, type, typeof(Expression<Func<TTo, bool>>)) as Expression<Func<TTo, bool>>
                 : _mapper.Map(from, type, typeof(Expression<Func<TTo, bool>>)) as Expression<Func<TTo, bool>>;
             if (equivExpr == null)
-                return;
+                throw new ArgumentException($"Could not retreive equivalency expression for mapping {type.Name} --> {typeof(TTo).Name}");
 
             var to = _sourceSet.FirstOrDefault(equivExpr);
 
@@ -45,6 +45,8 @@ namespace AutoMapper.EntityFrameworkCore
                 else
                     _mapper.Map(from, to);
             }
+
+            return to;
         }
 
         public void Remove<TFrom>(TFrom from)

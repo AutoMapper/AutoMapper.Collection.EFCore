@@ -68,9 +68,10 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.SaveChanges();
 
             // Act
-            db.Things.Persist(mapper).InsertOrUpdate(new ThingDto { Title = "Test" });
+            var createdThing = db.Things.Persist(mapper).InsertOrUpdate(new ThingDto { Title = "Test" });
 
             // Assert
+            createdThing.Should().NotBeNull();
             db.ChangeTracker.Entries<Thing>().Count(x => x.State == EntityState.Added).Should().Be(1);
         }
 
@@ -87,12 +88,15 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.SaveChanges();
 
             // Act
-            db.Things.Persist(mapper).InsertOrUpdate(new ThingDto { Title = "Test" });
+            var createdThing = db.Things.Persist(mapper).InsertOrUpdate(new ThingDto { Title = "Test" });
             db.SaveChanges();
 
             // Assert
+            createdThing.Should().NotBeNull();
             db.Things.Count().Should().Be(4);
-            db.Things.OrderByDescending(x => x.ID).FirstOrDefault().Title.Should().Be("Test");
+            var createdThingFromEF = db.Things.OrderByDescending(x => x.ID).FirstOrDefault();
+            createdThingFromEF.Title.Should().Be("Test");
+            createdThing.Should().BeEquivalentTo(createdThingFromEF);
         }
 
         [Fact]
