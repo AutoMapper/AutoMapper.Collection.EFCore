@@ -25,7 +25,7 @@ namespace AutoMapper.EntityFrameworkCore
             return InsertOrUpdate(typeof(TFrom), from);
         }
 
-        public Task<TTo> InsertOrUpdateAsync<TFrom>(TFrom from, CancellationToken cancellationToken = default)
+        public Task<TTo> InsertOrUpdateAsync<TFrom>(TFrom from, CancellationToken cancellationToken = default(CancellationToken))
             where TFrom : class
         {
             return InsertOrUpdateAsync(typeof(TFrom), from, cancellationToken);
@@ -42,7 +42,7 @@ namespace AutoMapper.EntityFrameworkCore
             return MapObject(type, from, to);
         }
 
-        public async Task<TTo> InsertOrUpdateAsync(Type type, object from, CancellationToken cancellationToken = default)
+        public async Task<TTo> InsertOrUpdateAsync(Type type, object from, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -67,7 +67,7 @@ namespace AutoMapper.EntityFrameworkCore
                 _sourceSet.Remove(to);
         }
 
-        public async Task RemoveAsync<TFrom>(TFrom from, CancellationToken cancellationToken = default)
+        public async Task RemoveAsync<TFrom>(TFrom from, CancellationToken cancellationToken = default(CancellationToken))
             where TFrom : class
         {
             cancellationToken.ThrowIfCancellationRequested();
