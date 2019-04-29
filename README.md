@@ -13,10 +13,10 @@
             .AddEntityFrameworkInMemoryDatabase()
             .AddDbContext<DB>();
 
-        services.AddAutoMapper(automapper =>
+        services.AddAutoMapper((serviceProvider, automapper) =>
         {
             automapper.AddCollectionMappers();
-            automapper.UseEntityFrameworkCoreModel<DB>(services);
+            automapper.UseEntityFrameworkCoreModel<DB>(serviceProvider);
         }, typeof(DB).Assembly);
 
         var serviceProvider = services.BuildServiceProvider();
