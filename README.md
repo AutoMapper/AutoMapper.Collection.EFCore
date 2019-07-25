@@ -2,7 +2,7 @@
 
 AutoMapper.Collection.EFCore
 ================================
-`Automapper.Collection.EntityFrameworkCore` will help you mapping of EntityFrameowrk Core DbContext-object.
+`Automapper.Collection.EntityFrameworkCore` will help you mapping of EntityFramework Core DbContext-object.
 	
     Mapper.Initialize(cfg =>
     {
