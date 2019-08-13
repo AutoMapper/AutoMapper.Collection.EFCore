@@ -9,6 +9,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
     public class EntityFramworkCoreUsingDITests : EntityFramworkCoreTestsBase, IDisposable
     {
         private readonly ServiceProvider _serviceProvider;
+        private readonly Mapper _mapper;
         private readonly IServiceScope _serviceScope;
 
         public EntityFramworkCoreUsingDITests()
@@ -21,13 +22,13 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 
             _serviceProvider = services.BuildServiceProvider();
 
-            Mapper.Reset();
-            Mapper.Initialize(x =>
+            _mapper = new Mapper(new MapperConfiguration(x =>
             {
                 x.ConstructServicesUsing(type => ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, type));
                 x.AddCollectionMappers();
                 x.UseEntityFrameworkCoreModel<DB>(_serviceProvider);
-            });
+                x.CreateMap<ThingDto, Thing>().ReverseMap();
+            }));
 
             _serviceScope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
         }
@@ -45,7 +46,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 
         protected override IMapper GetMapper()
         {
-            return Mapper.Instance;
+            return _mapper;
         }
 
         public class DB : DBContextBase
