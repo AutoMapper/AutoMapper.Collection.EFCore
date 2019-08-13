@@ -7,7 +7,7 @@ AutoMapper.Collection.EFCore
     Mapper.Initialize(cfg =>
     {
         cfg.AddCollectionMappers();
-        cfg.SetGeneratePropertyMaps<GenerateEntityFrameworkCorePrimaryKeyPropertyMaps<DB>>();
+        cfg.UseEntityFrameworkCoreModel<DB>(serviceProvider);
         // Configuration code
     });
 
