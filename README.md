@@ -22,7 +22,7 @@
         var serviceProvider = services.BuildServiceProvider();
     ```
 
-- Simple usage with static version of AutoMapper
+	- Simple usage with static version of AutoMapper
     ```
         Mapper.Initialize(x =>
         {
