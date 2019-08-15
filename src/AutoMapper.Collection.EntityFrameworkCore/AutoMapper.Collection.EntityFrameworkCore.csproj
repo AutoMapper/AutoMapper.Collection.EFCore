@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Collection" Version="6.0.0-alpha-1908131117" />
+    <PackageReference Include="AutoMapper.Collection" Version="6.0.0-ci-*" />
   </ItemGroup>
 
   <ItemGroup>
