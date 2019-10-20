@@ -19,10 +19,11 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
                 .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<DB>(options => options.UseInMemoryDatabase("EfTestDatabase" + Guid.NewGuid()));
 
-            services.AddAutoMapper(automapper =>
+            services.AddAutoMapper(x =>
             {
-                automapper.AddCollectionMappers();
-                automapper.UseEntityFrameworkCoreModel<DB>(services);
+                x.AddCollectionMappers();
+                x.UseEntityFrameworkCoreModel<DB>(services);
+                x.CreateMap<ThingDto, Thing>().ReverseMap();
             }, new Assembly[0]);
 
             this._serviceProvider = services.BuildServiceProvider();

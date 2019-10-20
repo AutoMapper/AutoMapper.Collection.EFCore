@@ -16,7 +16,7 @@ namespace AutoMapper.EntityFrameworkCore
         public Persistence(DbSet<TTo> sourceSet, IMapper mapper)
         {
             _sourceSet = sourceSet;
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public TTo InsertOrUpdate<TFrom>(TFrom from)
@@ -85,15 +85,12 @@ namespace AutoMapper.EntityFrameworkCore
         {
             if (to == null)
             {
-                to = (TTo)(_mapper?.Map(from, type, typeof(TTo)) ?? Mapper.Map(from, type, typeof(TTo)));
+                to = (TTo)_mapper.Map(from, type, typeof(TTo));
                 _sourceSet.Add(to);
             }
             else
             {
-                if (_mapper == null)
-                    Mapper.Map(from, to);
-                else
-                    _mapper.Map(from, to);
+                _mapper.Map(from, to);
             }
             return to;
         }
@@ -105,9 +102,7 @@ namespace AutoMapper.EntityFrameworkCore
 
         private Expression<Func<TTo, bool>> GetEquivalenceExpression(Type type, object from)
         {
-            return _mapper == null
-                ? Mapper.Map(from, type, typeof(Expression<Func<TTo, bool>>)) as Expression<Func<TTo, bool>>
-                : _mapper.Map(from, type, typeof(Expression<Func<TTo, bool>>)) as Expression<Func<TTo, bool>>;
+            return _mapper.Map(from, type, typeof(Expression<Func<TTo, bool>>)) as Expression<Func<TTo, bool>>;
         }
     }
 }

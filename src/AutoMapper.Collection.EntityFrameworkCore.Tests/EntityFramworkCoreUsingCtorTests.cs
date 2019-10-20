@@ -6,15 +6,16 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
     public class EntityFramworkCoreUsingCtorTests : EntityFramworkCoreTestsBase
     {
+        private readonly Mapper _mapper;
+
         public EntityFramworkCoreUsingCtorTests()
         {
-            Mapper.Reset();
-            Mapper.Initialize(x =>
+            _mapper = new Mapper(new MapperConfiguration(x =>
             {
                 x.AddCollectionMappers();
                 x.CreateMap<ThingDto, Thing>().ReverseMap();
                 x.UseEntityFrameworkCoreModel<DB>();
-            });
+            }));
         }
 
         protected override DBContextBase GetDbContext()
@@ -24,7 +25,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 
         protected override IMapper GetMapper()
         {
-            return Mapper.Instance;
+            return _mapper;
         }
 
         public class DB : DBContextBase
