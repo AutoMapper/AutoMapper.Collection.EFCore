@@ -14,7 +14,7 @@ namespace AutoMapper.EntityFrameworkCore
 
         public GenerateEntityFrameworkCorePrimaryKeyPropertyMaps()
         {
-            throw new InvalidOperationException("Use UseEntityFrameworkCoreModel instead of using SetGeneratePropertyMaps.");
+            throw new InvalidOperationException($"Use {nameof(MapperConfigurationExpressionExtensions.UseEntityFrameworkCoreModel)} instead of using SetGeneratePropertyMaps.");
         }
 
         public GenerateEntityFrameworkCorePrimaryKeyPropertyMaps(IModel model) => _model = model;
