@@ -56,9 +56,6 @@ namespace AutoMapper
         /// only used if you are using <see cref="DbContextOptionsBuilder.UseModel(IModel)"/>.
         /// </summary>
         public static void UseEntityFrameworkCoreModel<TContext>(this IMapperConfigurationExpression config, IModel model)
-            where TContext : DbContext
-        {
-            config.SetGeneratePropertyMaps(new GenerateEntityFrameworkCorePrimaryKeyPropertyMaps<TContext>(model));
-        }
+            where TContext : DbContext => config.SetGeneratePropertyMaps(new GenerateEntityFrameworkCorePrimaryKeyPropertyMaps<TContext>(model));
     }
 }

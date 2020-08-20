@@ -1,18 +1,17 @@
 ﻿using System;
-using AutoMapper.EntityFrameworkCore;
 using AutoMapper.EquivalencyExpression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
-    public class EntityFramworkCoreUsingDITests : EntityFramworkCoreTestsBase, IDisposable
+    public class EntityFrameworkCoreUsingDITests : EntityFrameworkCoreTestsBase, IDisposable
     {
         private readonly ServiceProvider _serviceProvider;
         private readonly Mapper _mapper;
         private readonly IServiceScope _serviceScope;
 
-        public EntityFramworkCoreUsingDITests()
+        public EntityFrameworkCoreUsingDITests()
         {
             var services = new ServiceCollection();
 
@@ -39,15 +38,9 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             _serviceProvider?.Dispose();
         }
 
-        protected override DBContextBase GetDbContext()
-        {
-            return _serviceScope.ServiceProvider.GetRequiredService<DB>();
-        }
+        protected override DBContextBase GetDbContext() => _serviceScope.ServiceProvider.GetRequiredService<DB>();
 
-        protected override IMapper GetMapper()
-        {
-            return _mapper;
-        }
+        protected override IMapper GetMapper() => _mapper;
 
         public class DB : DBContextBase
         {
