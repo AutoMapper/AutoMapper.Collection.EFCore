@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper.EntityFrameworkCore;
 using FluentAssertions;
@@ -7,18 +8,15 @@ using Xunit;
 
 namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
-    public abstract class EntityFramworkCoreTestsBase
+    public abstract class EntityFramworkCoreTestsBase : IDisposable
     {
-        protected abstract DBContextBase GetDbContext();
-        protected abstract IMapper GetMapper();
+        protected IMapper mapper;
+        protected DBContextBase db;               // IDisposable
 
         [Fact]
         public void Persist_InsertOrUpdate_WhenEntityExist_ThenTheEntityShouldBeInTheModifiedState()
         {
             // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -36,10 +34,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public void Persist_InsertOrUpdate_WhenEntityExist_ThenTheEntityShouldBeUpdated()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -63,10 +58,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         /// <remarks>this behaviour is like INPC in GUI land</remarks>
         public void Persist_InsertOrUpdate_WhenSameEntity_ThenTheEntityShouldBeInTheUnchangedState()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -90,10 +82,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         /// <remarks>this behaviour is like INPC in GUI land</remarks>
         public void Persist_InsertOrUpdate_WhenSameEntity_ThenSavedEntityShouldBeSame()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -115,10 +104,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public void Persist_InsertOrUpdate_WhenEntityDoesNotExist_ThenTheEntityShouldBeInTheAddedState()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -135,10 +121,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public void Persist_InsertOrUpdate_WhenEntityDoesNotExist_ThenTheEntityShouldBeInserted()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -159,10 +142,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public async Task Persist_InsertOrUpdateAsync_WhenEntityExist_ThenTheEntityShouldBeInTheModifiedState()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -180,10 +160,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public async Task Persist_InsertOrUpdateAsync_WhenEntityExist_ThenTheEntityShouldBeUpdated()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -207,10 +184,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         /// <remarks>this behaviour is like INPC in GUI land</remarks>
         public async Task Persist_InsertOrUpdateAsync_WhenSameEntity_ThenTheEntityShouldBeInTheUnchangedState()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -234,10 +208,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         /// <remarks>this behaviour is like INPC in GUI land</remarks>
         public async Task Persist_InsertOrUpdateAsync_WhenSameEntity_ThenSavedEntityShouldBeSame()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -259,10 +230,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public async Task Persist_InsertOrUpdateAsync_WhenEntityDoesNotExist_ThenTheEntityShouldBeInTheAddedState()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -279,10 +247,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public async Task Persist_InsertOrUpdateAsync_WhenEntityDoesNotExist_ThenTheEntityShouldBeInserted()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -303,10 +268,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public void Persist_Remove_WhenEntityExist_ThenTheEntityShouldBeInTheDeletedState()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -324,10 +286,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public void Persist_Remove_WhenEntityExist_ThenTheEntityShouldBeDeleted()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -347,10 +306,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public void Persist_Remove_WhenEntityDoesNotExist_ThenShouldBeUnchangedState()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -367,10 +323,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public void Persist_Remove_WhenEntityDoesNotExist_ThenShouldBeNoChange()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -391,10 +344,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public async Task Persist_RemoveAsync_WhenEntityExist_ThenTheEntityShouldBeInTheDeletedState()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -412,10 +362,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public async Task Persist_RemoveAsync_WhenEntityExist_ThenTheEntityShouldBeDeleted()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -435,10 +382,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public async Task Persist_RemoveAsync_WhenEntityDoesNotExist_ThenShouldBeUnchangedState()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -455,10 +399,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         [Fact]
         public async Task Persist_RemoveAsync_WhenEntityDoesNotExist_ThenShouldBeNoChange()
         {
-            // Arrange
-            var mapper = GetMapper();
-            var db = GetDbContext();
-
+            // Arrange [mapper and db fields set in ctor]
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
@@ -475,6 +416,8 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Count().Should().Be(3);
             db.Things.Find(item.ID + 1).Should().BeNull();
         }
+
+        public virtual void Dispose() => db?.Dispose();
 
         public abstract class DBContextBase : DbContext
         {

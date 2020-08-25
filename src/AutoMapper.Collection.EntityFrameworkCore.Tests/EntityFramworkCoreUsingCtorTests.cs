@@ -16,17 +16,14 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
                 x.CreateMap<ThingDto, Thing>().ReverseMap();
                 x.UseEntityFrameworkCoreModel<DB>();
             }));
+
+            mapper = GetMapper();               // needed for every test so pref to place into ctor instead of each Arrange
+            db = GetDbContext();                // XUnit will create here in ctor and Dispose() after each test
         }
 
-        protected override DBContextBase GetDbContext()
-        {
-            return new DB();
-        }
+        private DBContextBase GetDbContext() => new DB();
 
-        protected override IMapper GetMapper()
-        {
-            return _mapper;
-        }
+        private IMapper GetMapper() => _mapper;
 
         public class DB : DBContextBase
         {
