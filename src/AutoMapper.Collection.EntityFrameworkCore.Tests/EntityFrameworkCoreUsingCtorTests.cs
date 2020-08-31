@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
-    public class EntityFramworkCoreUsingCtorTests : EntityFramworkCoreTestsBase
+    public class EntityFrameworkCoreUsingCtorTests : EntityFrameworkCoreTestsBase
     {
         private readonly Mapper _mapper;
 
-        public EntityFramworkCoreUsingCtorTests()
+        public EntityFrameworkCoreUsingCtorTests()
         {
             _mapper = new Mapper(new MapperConfiguration(x =>
             {
@@ -18,15 +18,9 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             }));
         }
 
-        protected override DBContextBase GetDbContext()
-        {
-            return new DB();
-        }
+        protected override DBContextBase GetDbContext() => new DB();
 
-        protected override IMapper GetMapper()
-        {
-            return _mapper;
-        }
+        protected override IMapper GetMapper() => _mapper;
 
         public class DB : DBContextBase
         {

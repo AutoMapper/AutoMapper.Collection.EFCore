@@ -7,7 +7,7 @@ using Xunit;
 
 namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
-    public abstract class EntityFramworkCoreTestsBase
+    public abstract class EntityFrameworkCoreTestsBase
     {
         protected abstract DBContextBase GetDbContext();
         protected abstract IMapper GetMapper();
@@ -492,13 +492,14 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
         {
             public int ID { get; set; }
             public string Title { get; set; }
-            public override string ToString() { return Title; }
+            public override string ToString() => Title;
         }
 
         public class ThingDto
         {
             public int ID { get; set; }
             public string Title { get; set; }
+            public override string ToString() => Title;
         }
     }
 }

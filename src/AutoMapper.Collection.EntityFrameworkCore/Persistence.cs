@@ -20,35 +20,33 @@ namespace AutoMapper.EntityFrameworkCore
         }
 
         public TTo InsertOrUpdate<TFrom>(TFrom from)
-            where TFrom : class
-        {
-            return InsertOrUpdate(typeof(TFrom), from);
-        }
+            where TFrom : class => InsertOrUpdate(typeof(TFrom), from);
 
-        public Task<TTo> InsertOrUpdateAsync<TFrom>(TFrom from, CancellationToken cancellationToken = default(CancellationToken))
-            where TFrom : class
-        {
-            return InsertOrUpdateAsync(typeof(TFrom), from, cancellationToken);
-        }
+        public Task<TTo> InsertOrUpdateAsync<TFrom>(TFrom from, CancellationToken cancellationToken = default)
+            where TFrom : class => InsertOrUpdateAsync(typeof(TFrom), from, cancellationToken);
 
         public TTo InsertOrUpdate(Type type, object from)
         {
             var equivExpr = GetEquivalenceExpression(type, from);
             if (equivExpr == null)
-                throw new ArgumentException($"Could not retreive equivalency expression for mapping {type.Name} --> {typeof(TTo).Name}");
+            {
+                throw new ArgumentException($"Could not retrieve equivalency expression for mapping {type.Name} --> {typeof(TTo).Name}");
+            }
 
             var to = _sourceSet.FirstOrDefault(equivExpr);
 
             return MapObject(type, from, to);
         }
 
-        public async Task<TTo> InsertOrUpdateAsync(Type type, object from, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<TTo> InsertOrUpdateAsync(Type type, object from, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             var equivExpr = GetEquivalenceExpression(type, from);
             if (equivExpr == null)
-                throw new ArgumentException($"Could not retreive equivalency expression for mapping {type.Name} --> {typeof(TTo).Name}");
+            {
+                throw new ArgumentException($"Could not retrieve equivalency expression for mapping {type.Name} --> {typeof(TTo).Name}");
+            }
 
             var to = await _sourceSet.FirstOrDefaultAsync(equivExpr, cancellationToken).ConfigureAwait(false);
 
@@ -60,25 +58,35 @@ namespace AutoMapper.EntityFrameworkCore
         {
             var equivExpr = GetEquivalenceExpression(from);
             if (equivExpr == null)
+            {
                 return;
+            }
+
             var to = _sourceSet.FirstOrDefault(equivExpr);
 
             if (to != null)
+            {
                 _sourceSet.Remove(to);
+            }
         }
 
-        public async Task RemoveAsync<TFrom>(TFrom from, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task RemoveAsync<TFrom>(TFrom from, CancellationToken cancellationToken = default)
             where TFrom : class
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             var equivExpr = GetEquivalenceExpression(from);
             if (equivExpr == null)
+            {
                 return;
+            }
+
             var to = await _sourceSet.FirstOrDefaultAsync(equivExpr, cancellationToken).ConfigureAwait(false);
 
             if (to != null)
+            {
                 _sourceSet.Remove(to);
+            }
         }
 
         private TTo MapObject(Type type, object from, TTo to)
@@ -95,14 +103,8 @@ namespace AutoMapper.EntityFrameworkCore
             return to;
         }
 
-        private Expression<Func<TTo, bool>> GetEquivalenceExpression<TFrom>(TFrom from)
-        {
-            return GetEquivalenceExpression(typeof(TFrom), from);
-        }
+        private Expression<Func<TTo, bool>> GetEquivalenceExpression<TFrom>(TFrom from) => GetEquivalenceExpression(typeof(TFrom), from);
 
-        private Expression<Func<TTo, bool>> GetEquivalenceExpression(Type type, object from)
-        {
-            return _mapper.Map(from, type, typeof(Expression<Func<TTo, bool>>)) as Expression<Func<TTo, bool>>;
-        }
+        private Expression<Func<TTo, bool>> GetEquivalenceExpression(Type type, object from) => _mapper.Map(from, type, typeof(Expression<Func<TTo, bool>>)) as Expression<Func<TTo, bool>>;
     }
 }

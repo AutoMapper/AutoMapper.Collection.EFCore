@@ -4,8 +4,6 @@
 
 `Automapper.Collection.EntityFrameworkCore` will help you mapping of EntityFrameowrk Core DbContext-object.
 
-[![NuGet](http://img.shields.io/nuget/v/Automapper.Collection.EntityFrameworkCore.svg)](https://www.nuget.org/packages/Automapper.Collection.EntityFrameworkCore/)
-
 ## Configuration examples
 
 - Usage together with Dependency injection and AutoMapper.Extensions.Microsoft.DependencyInjection pacakge

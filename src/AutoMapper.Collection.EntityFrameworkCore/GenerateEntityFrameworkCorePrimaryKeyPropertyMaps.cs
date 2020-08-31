@@ -12,10 +12,7 @@ namespace AutoMapper.EntityFrameworkCore
     {
         private readonly IModel _model;
 
-        public GenerateEntityFrameworkCorePrimaryKeyPropertyMaps()
-        {
-            throw new InvalidOperationException($"Use {nameof(MapperConfigurationExpressionExtensions.UseEntityFrameworkCoreModel)} instead of using SetGeneratePropertyMaps.");
-        }
+        public GenerateEntityFrameworkCorePrimaryKeyPropertyMaps() => throw new InvalidOperationException($"Use {nameof(MapperConfigurationExpressionExtensions.UseEntityFrameworkCoreModel)} instead of using SetGeneratePropertyMaps.");
 
         public GenerateEntityFrameworkCorePrimaryKeyPropertyMaps(IModel model) => _model = model;
 
