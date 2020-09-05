@@ -96,9 +96,9 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
-            var item = db.Things.First();
+            var item = await db.Things.FirstAsync();
 
             // Act
             await db.Things.Persist(mapper).InsertOrUpdateAsync(new ThingDto { ID = item.ID, Title = "Test" });
@@ -114,17 +114,17 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
-            var item = db.Things.First();
+            var item = await db.Things.FirstAsync();
 
             // Act
             await db.Things.Persist(mapper).InsertOrUpdateAsync(new ThingDto { ID = item.ID, Title = "Test" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             // Assert
-            db.Things.Count().Should().Be(3);
-            db.Things.FirstOrDefault(x => x.ID == item.ID).Title.Should().Be("Test");
+            (await db.Things.CountAsync()).Should().Be(3);
+            (await db.Things.FirstOrDefaultAsync(x => x.ID == item.ID)).Title.Should().Be("Test");
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             // Act
             var createdThing = await db.Things.Persist(mapper).InsertOrUpdateAsync(new ThingDto { Title = "Test" });
@@ -151,16 +151,16 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             // Act
             var createdThing = await db.Things.Persist(mapper).InsertOrUpdateAsync(new ThingDto { Title = "Test" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             // Assert
             createdThing.Should().NotBeNull();
-            db.Things.Count().Should().Be(4);
-            var createdThingFromEF = db.Things.OrderByDescending(x => x.ID).FirstOrDefault();
+            (await db.Things.CountAsync()).Should().Be(4);
+            var createdThingFromEF = await db.Things.OrderByDescending(x => x.ID).FirstOrDefaultAsync();
             createdThingFromEF.Title.Should().Be("Test");
             createdThing.Should().BeEquivalentTo(createdThingFromEF);
         }
@@ -210,9 +210,9 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
-            var item = db.Things.First();
+            var item = await db.Things.FirstAsync();
 
             // Act
             await db.Things.Persist(mapper).RemoveAsync(new ThingDto { ID = item.ID, Title = "Test" });
@@ -228,17 +228,17 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
-            var item = db.Things.First();
+            var item = await db.Things.FirstAsync();
 
             // Act
             await db.Things.Persist(mapper).RemoveAsync(new ThingDto { ID = item.ID, Title = "Test" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             // Assert
-            db.Things.Count().Should().Be(2);
-            db.Things.Find(item.ID).Should().BeNull();
+            (await db.Things.CountAsync()).Should().Be(2);
+            (await db.Things.FindAsync(item.ID)).Should().BeNull();
         }
 
         [Fact]
@@ -340,7 +340,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             // Act
             await db.Things.Persist(mapper).RemoveAsync(new ThingDto { Title = "ignored" });
@@ -358,17 +358,17 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
-            var item = db.Things.OrderByDescending(x => x.ID).First();
+            var item = await db.Things.OrderByDescending(x => x.ID).FirstAsync();
 
             // Act
             await db.Things.Persist(mapper).RemoveAsync(new ThingDto { Title = "ignored" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             // Assert
-            db.Things.Count().Should().Be(3);
-            db.Things.Find(item.ID + 1).Should().BeNull();
+            (await db.Things.CountAsync()).Should().Be(3);
+            (await db.Things.FindAsync(item.ID + 1)).Should().BeNull();
         }
 
         [Fact]
@@ -382,11 +382,9 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
-            //var item = db.Things.Where(x => x.Title == "Test2").First();  // first(special)
-            var item = db.Things.Where(x => x.Title == "Test3").First();    // middleish
-            //var item = db.Things.Where(x => x.Title == "Test4").First();  // last (special)
+            var item = await db.Things.Where(x => x.Title == "Test3").FirstAsync();
 
             // Act
             await db.Things.Persist(mapper).InsertOrUpdateAsync(new ThingDto { ID = item.ID, Title = item.Title });
@@ -406,19 +404,17 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Add(new Thing { Title = "Test2" });
             db.Things.Add(new Thing { Title = "Test3" });
             db.Things.Add(new Thing { Title = "Test4" });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
-            //var item = db.Things.Where(x => x.Title == "Test2").First();  // first(special)
-            var item = db.Things.Where(x => x.Title == "Test3").First();    // middleish
-            //var item = db.Things.Where(x => x.Title == "Test4").First();  // last (special)
+            var item = await db.Things.Where(x => x.Title == "Test3").FirstAsync();
 
             // Act
             await db.Things.Persist(mapper).InsertOrUpdateAsync(new ThingDto { ID = item.ID, Title = item.Title });
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             // Assert
-            db.Things.Count().Should().Be(3);
-            db.Things.FirstOrDefault(x => x.ID == item.ID).Title.Should().Be(item.Title);
+            (await db.Things.CountAsync()).Should().Be(3);
+           (await db.Things.FirstOrDefaultAsync(x => x.ID == item.ID)).Title.Should().Be(item.Title);
         }
 
         public virtual void Dispose() => db?.Dispose();
