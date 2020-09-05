@@ -241,10 +241,6 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             db.Things.Find(item.ID).Should().BeNull();
         }
 
-        // Dick PR40 additions start here after all the legacy Facts.
-        // not the most logical but [as tests extremely similar] GIT Merge false matches and declares Merge Conflict
-        // hopefully wiser Collaborators can shuffle to above (grouping InsertOrUpdateX, RemoveX bits better)
-
         [Fact]
         /// <summary>sut is non-existent (i.e. new) entity where ID=0</summary>
         /// <remarks>AutoMapper.Collection.EntityFrameworkCore.Remove silently ignores non-existent DELETEs</remarks>
