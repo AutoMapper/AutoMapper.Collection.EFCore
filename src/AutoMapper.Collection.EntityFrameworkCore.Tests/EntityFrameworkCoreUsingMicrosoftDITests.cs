@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
-    public class EntityFrameworkCoreUsingMicrosoftDITests : EntityFramworkCoreTestsBase //, IDisposable
+    public class EntityFrameworkCoreUsingMicrosoftDITests : EntityFramworkCoreTestsBase
     {
         private readonly ServiceProvider _serviceProvider;
         private readonly IServiceScope _serviceScope;
@@ -26,23 +26,20 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
                 x.CreateMap<ThingDto, Thing>().ReverseMap();
             }, new Assembly[0]);
 
-            this._serviceProvider = services.BuildServiceProvider();
-            this._serviceScope = this._serviceProvider.CreateScope();
+            _serviceProvider = services.BuildServiceProvider();
+            _serviceScope = _serviceProvider.CreateScope();
 
-            mapper = GetMapper();               // needed for every test so pref to place into ctor instead of each Arrange
-            db = GetDbContext();                // XUnit will create here in ctor and Dispose() after each test
+            mapper = _serviceScope.ServiceProvider.GetRequiredService<IMapper>();
+            db = _serviceScope.ServiceProvider.GetRequiredService<DB>();
         }
 
         public override void Dispose()
         {
-            this._serviceScope?.Dispose();
-            this._serviceProvider?.Dispose();
+            _serviceScope?.Dispose();
+            _serviceProvider?.Dispose();
             base.Dispose();
         }
 
-        private DBContextBase GetDbContext() => this._serviceScope.ServiceProvider.GetRequiredService<DB>();
-
-        private IMapper GetMapper() => this._serviceScope.ServiceProvider.GetRequiredService<IMapper>();
 
         public class DB : DBContextBase
         {
