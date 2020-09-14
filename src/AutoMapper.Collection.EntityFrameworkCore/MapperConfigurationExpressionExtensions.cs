@@ -10,6 +10,15 @@ namespace AutoMapper
     public static class MapperConfigurationExpressionExtensions
     {
         /// <summary>
+        /// Generates and adds property maps based on the primary keys for the given <see cref="DbContext"/>. This is done by getting Model from
+        /// an instance of the <see cref="DbContext"/> .
+        /// </summary>
+        public static void UseEntityFrameworkCoreModel(this IMapperConfigurationExpression config, DbContext context)
+        {
+            config.UseEntityFrameworkCoreModel(context.Model);
+        }
+    
+        /// <summary>
         /// Generates and adds property maps based on the primary keys for the given <see cref="DbContext"/>. This is done by creating an
         /// instance of the <see cref="DbContext"/> using the parameterless constructor.
         /// </summary>
@@ -18,7 +27,7 @@ namespace AutoMapper
         {
             using (var context = new TContext())
             {
-                config.UseEntityFrameworkCoreModel<TContext>(context.Model);
+                config.UseEntityFrameworkCoreModel(context.Model);
             }
         }
 
@@ -47,7 +56,7 @@ namespace AutoMapper
             using (var scope = serviceProvider.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<TContext>();
-                config.UseEntityFrameworkCoreModel<TContext>(context.Model);
+                config.UseEntityFrameworkCoreModel(context.Model);
             }
         }
 
@@ -55,7 +64,6 @@ namespace AutoMapper
         /// Generates and adds property maps based on the primary keys for the given <see cref="DbContext"/>. This method is generally
         /// only used if you are using <see cref="DbContextOptionsBuilder.UseModel(IModel)"/>.
         /// </summary>
-        public static void UseEntityFrameworkCoreModel<TContext>(this IMapperConfigurationExpression config, IModel model)
-            where TContext : DbContext => config.SetGeneratePropertyMaps(new GenerateEntityFrameworkCorePrimaryKeyPropertyMaps<TContext>(model));
+        public static void UseEntityFrameworkCoreModel(this IMapperConfigurationExpression config, IModel model) => config.SetGeneratePropertyMaps(new GenerateEntityFrameworkCorePrimaryKeyPropertyMaps(model));
     }
 }
