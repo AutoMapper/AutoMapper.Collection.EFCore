@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Collection updating support for EntityFrameworkCore with AutoMapper. Extends DBSet&lt;T&gt; with Persist&lt;TDto&gt;().InsertUpdate(dto) and Persist&lt;TDto&gt;().Delete(dto).  Will find the matching object and will Insert/Update/Delete.</Description>
     <Authors>Tyler Carlson</Authors>
-    <TargetFrameworks>net461;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <AssemblyName>AutoMapper.Collection.EntityFrameworkCore</AssemblyName>
     <PackageId>AutoMapper.Collection.EntityFrameworkCore</PackageId>
     <PackageIconUrl>https://s3.amazonaws.com/automapper/icon.png</PackageIconUrl>
