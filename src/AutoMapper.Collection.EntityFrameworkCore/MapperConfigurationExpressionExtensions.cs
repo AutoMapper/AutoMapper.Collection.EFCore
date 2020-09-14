@@ -10,15 +10,6 @@ namespace AutoMapper
     public static class MapperConfigurationExpressionExtensions
     {
         /// <summary>
-        /// Generates and adds property maps based on the primary keys for the given <see cref="DbContext"/>. This is done by getting Model from
-        /// an instance of the <see cref="DbContext"/> .
-        /// </summary>
-        public static void UseEntityFrameworkCoreModel(this IMapperConfigurationExpression config, DbContext context)
-        {
-            config.UseEntityFrameworkCoreModel(context.Model);
-        }
-    
-        /// <summary>
         /// Generates and adds property maps based on the primary keys for the given <see cref="DbContext"/>. This is done by creating an
         /// instance of the <see cref="DbContext"/> using the parameterless constructor.
         /// </summary>
