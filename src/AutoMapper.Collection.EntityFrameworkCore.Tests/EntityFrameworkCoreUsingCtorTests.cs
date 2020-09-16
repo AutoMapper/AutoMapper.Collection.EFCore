@@ -4,23 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
-    public class EntityFrameworkCoreUsingCtorTests : EntityFrameworkCoreTestsBase
+    public class EntityFrameworkCoreUsingCtorTests : EntityFramworkCoreTestsBase
     {
-        private readonly Mapper _mapper;
-
         public EntityFrameworkCoreUsingCtorTests()
         {
-            _mapper = new Mapper(new MapperConfiguration(x =>
+            mapper = new Mapper(new MapperConfiguration(x =>
             {
                 x.AddCollectionMappers();
                 x.CreateMap<ThingDto, Thing>().ReverseMap();
                 x.UseEntityFrameworkCoreModel<DB>();
             }));
+
+            db = new DB();
         }
-
-        protected override DBContextBase GetDbContext() => new DB();
-
-        protected override IMapper GetMapper() => _mapper;
 
         public class DB : DBContextBase
         {

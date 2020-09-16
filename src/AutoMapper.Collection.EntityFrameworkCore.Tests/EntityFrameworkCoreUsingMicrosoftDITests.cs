@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 {
-    public class EntityFrameworkCoreUsingMicrosoftDITests : EntityFrameworkCoreTestsBase, IDisposable
+    public class EntityFrameworkCoreUsingMicrosoftDITests : EntityFramworkCoreTestsBase
     {
         private readonly ServiceProvider _serviceProvider;
         private readonly IServiceScope _serviceScope;
@@ -28,17 +28,18 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 
             _serviceProvider = services.BuildServiceProvider();
             _serviceScope = _serviceProvider.CreateScope();
+
+            mapper = _serviceScope.ServiceProvider.GetRequiredService<IMapper>();
+            db = _serviceScope.ServiceProvider.GetRequiredService<DB>();
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             _serviceScope?.Dispose();
             _serviceProvider?.Dispose();
+            base.Dispose();
         }
 
-        protected override DBContextBase GetDbContext() => _serviceScope.ServiceProvider.GetRequiredService<DB>();
-
-        protected override IMapper GetMapper() => _serviceScope.ServiceProvider.GetRequiredService<IMapper>();
 
         public class DB : DBContextBase
         {
