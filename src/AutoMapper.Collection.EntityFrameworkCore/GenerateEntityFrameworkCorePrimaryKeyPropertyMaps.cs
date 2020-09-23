@@ -7,8 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AutoMapper.EntityFrameworkCore
 {
-    public class GenerateEntityFrameworkCorePrimaryKeyPropertyMaps<TDatabaseContext> : IGeneratePropertyMaps
-        where TDatabaseContext : DbContext
+    public class GenerateEntityFrameworkCorePrimaryKeyPropertyMaps : IGeneratePropertyMaps
     {
         private readonly IModel _model;
 
