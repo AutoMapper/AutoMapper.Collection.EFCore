@@ -2,13 +2,13 @@
 
 # AutoMapper.Collection.EntityFrameworkCore
 
-`Automapper.Collection.EntityFrameworkCore` will help you mapping of EntityFrameowrk Core DbContext-object.
+`Automapper.Collection.EntityFrameworkCore` will help you when mapping an EntityFramework Core DbContext-object.
 
 [![NuGet](http://img.shields.io/nuget/v/Automapper.Collection.EntityFrameworkCore.svg)](https://www.nuget.org/packages/Automapper.Collection.EntityFrameworkCore/)
 
 ## Configuration examples
 
-- Usage together with Dependency injection and AutoMapper.Extensions.Microsoft.DependencyInjection pacakge
+- Usage together with Dependency injection and AutoMapper.Extensions.Microsoft.DependencyInjection package
 ```	
 var services = new ServiceCollection();
 services
@@ -45,7 +45,7 @@ Persist doesn't call submit changes automatically
 
 How to get it
 --------------------------------
-Use NuGet Package Manager to install the package or use any of the following command in NuGet Package Manager Console.
+Use NuGet Package Manager to install the package or use any of the following commands in NuGet Package Manager Console.
 
 ```	
 PM> Install-Package AutoMapper.Collection.EntityFrameworkCore
