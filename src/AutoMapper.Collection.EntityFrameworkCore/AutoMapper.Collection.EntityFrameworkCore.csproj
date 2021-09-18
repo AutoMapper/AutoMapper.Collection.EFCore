@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Collection updating support for EntityFrameworkCore with AutoMapper. Extends DBSet&lt;T&gt; with Persist&lt;TDto&gt;().InsertUpdate(dto) and Persist&lt;TDto&gt;().Delete(dto).  Will find the matching object and will Insert/Update/Delete.</Description>
     <Authors>Tyler Carlson</Authors>
-    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard2.0;net5.0;net6.0</TargetFrameworks>
     <AssemblyName>AutoMapper.Collection.EntityFrameworkCore</AssemblyName>
     <PackageId>AutoMapper.Collection.EntityFrameworkCore</PackageId>
     <PackageIcon>icon.png</PackageIcon>
@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="4.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.14" />
     <PackageReference Include="Roslynator.Analyzers" Version="2.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -41,8 +40,21 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.14" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-  
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.14" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-rc.1.*" />
+  </ItemGroup>
+
 </Project>

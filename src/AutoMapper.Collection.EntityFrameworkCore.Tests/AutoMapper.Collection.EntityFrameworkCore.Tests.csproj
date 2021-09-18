@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp2.0;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
     <AssemblyName>AutoMapper.Collection.EntityFrameworkCore.Tests</AssemblyName>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -11,16 +11,22 @@
   </ItemGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.14" />
+
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.0' ">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.14" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.1" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.1" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0-rc.1.*" />
   </ItemGroup>
 
   <ItemGroup>
