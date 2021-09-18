@@ -21,6 +21,9 @@ jobs:
       with:
         dotnet-version: '6.x'
         include-prerelease: true
+    - name: Dotnet info
+      run: dotnet --info
+      shell: pwsh
     - name: Build and Test
       run: ./Build.ps1
       shell: pwsh
