@@ -32,6 +32,7 @@ jobs:
       shell: pwsh
     - name: Artifacts
       uses: actions/upload-artifact@v2
+      if: always()
       with:
         name: artifacts
         path: artifacts/**/*
