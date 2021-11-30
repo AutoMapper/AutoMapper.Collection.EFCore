@@ -13,7 +13,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       with:
-        fetch-depth: 0
+        fetch-depth: 0        
+    - name: Setup .NET Core 6
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.x'
+        include-prerelease: true
     - name: Build and Test
       run: ./Build.ps1
       shell: pwsh
