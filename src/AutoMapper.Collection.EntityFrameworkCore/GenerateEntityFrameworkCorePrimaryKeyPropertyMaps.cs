@@ -7,8 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AutoMapper.EntityFrameworkCore
 {
-    public class GenerateEntityFrameworkCorePrimaryKeyPropertyMaps<TDatabaseContext> : IGeneratePropertyMaps
-        where TDatabaseContext : DbContext
+    public class GenerateEntityFrameworkCorePrimaryKeyPropertyMaps : IGeneratePropertyMaps
     {
         private readonly IModel _model;
 
@@ -20,7 +19,7 @@ namespace AutoMapper.EntityFrameworkCore
         {
             var propertyMaps = typeMap.PropertyMaps;
             var keyMembers = _model.FindEntityType(typeMap.DestinationType)?.FindPrimaryKey().Properties ?? new List<IProperty>();
-            return keyMembers.Select(m => propertyMaps.FirstOrDefault(p => p.DestinationMember.Name == m.Name));
+            return propertyMaps.Where(p => keyMembers.Any(m => m.Name == p.DestinationMember.Name));
         }
     }
 }
