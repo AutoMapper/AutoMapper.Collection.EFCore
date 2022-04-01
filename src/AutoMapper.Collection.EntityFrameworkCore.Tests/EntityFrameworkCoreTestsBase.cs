@@ -48,7 +48,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 
             // Assert
             db.Things.Count().Should().Be(3);
-            db.Things.FirstOrDefault(x => x.ID == item.ID).Title.Should().Be("Test");
+            db.Things.FirstOrDefault(x => x.ID == item.ID)?.Title.Should().Be("Test");
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             createdThing.Should().NotBeNull();
             db.Things.Count().Should().Be(4);
             var createdThingFromEF = db.Things.OrderByDescending(x => x.ID).FirstOrDefault();
-            createdThingFromEF.Title.Should().Be("Test");
+            createdThingFromEF?.Title.Should().Be("Test");
             createdThing.Should().BeEquivalentTo(createdThingFromEF);
         }
 
@@ -161,7 +161,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
             createdThing.Should().NotBeNull();
             (await db.Things.CountAsync()).Should().Be(4);
             var createdThingFromEF = await db.Things.OrderByDescending(x => x.ID).FirstOrDefaultAsync();
-            createdThingFromEF.Title.Should().Be("Test");
+            createdThingFromEF?.Title.Should().Be("Test");
             createdThing.Should().BeEquivalentTo(createdThingFromEF);
         }
 
@@ -328,7 +328,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 
             // Assert
             db.Things.Count().Should().Be(3);
-            db.Things.FirstOrDefault(x => x.ID == item.ID).Title.Should().Be(item.Title);
+            db.Things.FirstOrDefault(x => x.ID == item.ID)?.Title.Should().Be(item.Title);
         }
 
         [Fact]
@@ -414,7 +414,7 @@ namespace AutoMapper.Collection.EntityFrameworkCore.Tests
 
             // Assert
             (await db.Things.CountAsync()).Should().Be(3);
-           (await db.Things.FirstOrDefaultAsync(x => x.ID == item.ID)).Title.Should().Be(item.Title);
+            (await db.Things.FirstOrDefaultAsync(x => x.ID == item.ID))?.Title.Should().Be(item.Title);
         }
 
         public virtual void Dispose() => db?.Dispose();
