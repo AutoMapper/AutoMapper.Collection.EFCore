@@ -26,7 +26,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper.Collection" Version="[10.0.0,11.0.0)" />
     <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="[7.0.0,8.0.0)" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
