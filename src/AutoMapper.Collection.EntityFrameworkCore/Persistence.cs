@@ -19,13 +19,13 @@ namespace AutoMapper.EntityFrameworkCore
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public TTo InsertOrUpdate<TFrom>(TFrom from)
-            where TFrom : class => InsertOrUpdate(typeof(TFrom), from);
+        public TTo InsertOrUpdate<TFrom>(TFrom from, Action<IMappingOperationOptions<object, object>> opts = null)
+            where TFrom : class => InsertOrUpdate(typeof(TFrom), from, opts);
 
-        public Task<TTo> InsertOrUpdateAsync<TFrom>(TFrom from, CancellationToken cancellationToken = default)
-            where TFrom : class => InsertOrUpdateAsync(typeof(TFrom), from, cancellationToken);
+        public Task<TTo> InsertOrUpdateAsync<TFrom>(TFrom from, CancellationToken cancellationToken = default, Action<IMappingOperationOptions<object, object>> opts = null)
+            where TFrom : class => InsertOrUpdateAsync(typeof(TFrom), from, cancellationToken, opts);
 
-        public TTo InsertOrUpdate(Type type, object from)
+        public TTo InsertOrUpdate(Type type, object from, Action<IMappingOperationOptions<object, object>> opts = null)
         {
             var equivExpr = GetEquivalenceExpression(type, from);
             if (equivExpr == null)
@@ -35,10 +35,10 @@ namespace AutoMapper.EntityFrameworkCore
 
             var to = _sourceSet.FirstOrDefault(equivExpr);
 
-            return MapObject(type, from, to);
+            return MapObject(type, from, to, opts);
         }
 
-        public async Task<TTo> InsertOrUpdateAsync(Type type, object from, CancellationToken cancellationToken = default)
+        public async Task<TTo> InsertOrUpdateAsync(Type type, object from, CancellationToken cancellationToken = default, Action<IMappingOperationOptions<object, object>> opts = null)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -50,7 +50,7 @@ namespace AutoMapper.EntityFrameworkCore
 
             var to = await _sourceSet.FirstOrDefaultAsync(equivExpr, cancellationToken).ConfigureAwait(false);
 
-            return MapObject(type, from, to);
+            return MapObject(type, from, to, opts);
         }
 
         public void Remove<TFrom>(TFrom from)
@@ -89,16 +89,18 @@ namespace AutoMapper.EntityFrameworkCore
             }
         }
 
-        private TTo MapObject(Type type, object from, TTo to)
+        private TTo MapObject(Type type, object from, TTo to, Action<IMappingOperationOptions<object, object>> opts = null)
         {
+            opts ??= _ => { }; //Replace with empty action if null
+
             if (to == null)
             {
-                to = (TTo)_mapper.Map(from, type, typeof(TTo));
+                to = (TTo)_mapper.Map(from, type, typeof(TTo), opts);
                 _sourceSet.Add(to);
             }
             else
             {
-                _mapper.Map(from, to);
+                _mapper.Map(from, to, opts);
             }
             return to;
         }
