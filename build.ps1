@@ -26,10 +26,6 @@ $artifacts = ".\artifacts"
 
 if(Test-Path $artifacts) { Remove-Item $artifacts -Force -Recurse }
 
-exec { & dotnet clean -c Release }
+exec { & dotnet test -c Release --results-directory $artifacts -l trx }
 
-exec { & dotnet build -c Release }
-
-exec { & dotnet test -c Release -r $artifacts --no-build -l trx --verbosity=normal }
-
-exec { & dotnet pack .\AutoMapper.Collection.EFCore.sln -c Release -o $artifacts --no-build }
+exec { & dotnet pack .\src\AutoMapper\AutoMapper.csproj -c Release -o $artifacts --no-build }
