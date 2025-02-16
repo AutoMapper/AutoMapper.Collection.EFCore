@@ -14,21 +14,9 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.x
-    - name: Setup .NET Core 6
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.x'
-        include-prerelease: true
-    - name: Dotnet info
-      run: dotnet --info
-      shell: pwsh
     - name: Build and Test
       run: ./Build.ps1
       shell: pwsh
@@ -39,7 +27,7 @@ jobs:
       run: ./Push.ps1
       shell: pwsh
     - name: Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: artifacts
