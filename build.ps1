@@ -28,4 +28,4 @@ if(Test-Path $artifacts) { Remove-Item $artifacts -Force -Recurse }
 
 exec { & dotnet test -c Release --results-directory $artifacts -l trx }
 
-exec { & dotnet pack .\src\AutoMapper\AutoMapper.Collection.EFCore.csproj -c Release -o $artifacts --no-build }
+exec { & dotnet pack .\src\AutoMapper.Collection.EFCore\AutoMapper.Collection.EFCore.csproj -c Release -o $artifacts --no-build }
