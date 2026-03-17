@@ -1,9 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>Collection updating support for EntityFrameworkCore with AutoMapper. Extends DBSet&lt;T&gt; with Persist&lt;TDto&gt;().InsertUpdate(dto) and Persist&lt;TDto&gt;().Delete(dto).  Will find the matching object and will Insert/Update/Delete.</Description>
     <Authors>Tyler Carlson</Authors>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <AssemblyName>AutoMapper.Collection.EntityFrameworkCore</AssemblyName>
     <PackageId>AutoMapper.Collection.EntityFrameworkCore</PackageId>
     <PackageIcon>icon.png</PackageIcon>
@@ -24,17 +24,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Collection" Version="[12.0.0,13.0.0)" />
-    <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="[9.0.0,10.0.0)" />
+    <PackageReference Include="AutoMapper.Collection" Version="[13.0.0,14.0.0)" />
+    <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="[10.0.0,11.0.0)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.16" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
+  </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Roslynator.Analyzers" Version="2.3.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.15.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MinVer" Version="2.3.1">
+    <PackageReference Include="MinVer" Version="7.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
